@@ -1,13 +1,20 @@
-import { FlatList, Text, View } from "react-native";
+import { View } from "react-native";
+import ExpensesList from "./ExpensesList";
+import ExpensesSummary from "./ExpensesSummary";
 
-export default function ExpensesOutput({ expenses }) {
+const Dummy_Expenses = [
+    { id: 'e1', description: 'A Pair of Shoes', amount: 59.99, date: new Date('2022-12-19') },
+    { id: 'e2', description: 'Another Pair of Shoes', amount: 59.99, date: new Date('2022-12-20') },
+    { id: 'e3', description: 'Yet Another Pair of Shoes', amount: 59.99, date: new Date('2022-12-21') },
+    { id: 'e4', description: 'One More Pair of Shoes', amount: 59.99, date: new Date('2022-12-22') },
+    { id: 'e5', description: 'Last Pair of Shoes', amount: 59.99, date: new Date('2022-12-23') },
+];
+
+export default function ExpensesOutput({ expensesPeriod }: { expensesPeriod: string }) {
     return (
         <View>
-            <View>
-                <Text>Total Expenses</Text>
-                <Text>$Total</Text>
-            </View>
-            <FlatList data={expenses} renderItem={renderItem} keyExtractor={keyExtractor} />
+            <ExpensesSummary expenses={Dummy_Expenses} periodName={expensesPeriod} />
+            <ExpensesList expenses={Dummy_Expenses} />
         </View>
     );
 }
