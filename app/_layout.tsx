@@ -1,10 +1,13 @@
-import 'react-native-reanimated';
-import HomeScreen from './tabs/Index';
+import { StatusBar } from 'react-native';
+import RootIndex from './index';
 
 
 export default function RootLayout() {
 
   return (
-    <HomeScreen />
+    <>
+      <StatusBar barStyle="light-content" />
+      <RootIndex />
+    </>
   );
 }
