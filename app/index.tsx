@@ -3,6 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StyleSheet } from 'react-native';
 import { GlobalStyles } from '../constants/styles';
+import ExpensesContextProvider from './store/expenses-context';
 import AllExpenses from './tabs/AllExpenses';
 import ManageExpense from './tabs/ManageExpense';
 import RecentExpenses from './tabs/RecentExpenses';
@@ -50,26 +51,28 @@ function ExpensesOverview() {
 export default function RootIndex() {
   return (
     <>
-      <Stack.Navigator
-        screenOptions={{
-          headerStyle: { backgroundColor: GlobalStyles.colors.primary500 },
-          headerTintColor: 'white',
-        }}
-      >
-        <Stack.Screen
-          name="ExpensesOverview"
-          component={ExpensesOverview}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="ManageExpense"
-          component={ManageExpense}
-          options={{
-            title: 'Manage Expense',
-            presentation: 'modal',
+      <ExpensesContextProvider>
+        <Stack.Navigator
+          screenOptions={{
+            headerStyle: { backgroundColor: GlobalStyles.colors.primary500 },
+            headerTintColor: 'white',
           }}
-        />
-      </Stack.Navigator>
+        >
+          <Stack.Screen
+            name="ExpensesOverview"
+            component={ExpensesOverview}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="ManageExpense"
+            component={ManageExpense}
+            options={{
+              title: 'Manage Expense',
+              presentation: 'modal',
+            }}
+          />
+        </Stack.Navigator>
+      </ExpensesContextProvider>
     </>
   );
 }
