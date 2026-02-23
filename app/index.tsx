@@ -19,16 +19,22 @@ function ExpensesOverview() {
         headerTintColor: 'white',
         tabBarStyle: { backgroundColor: GlobalStyles.colors.primary500 },
         tabBarActiveTintColor: GlobalStyles.colors.accent500,
-        headerRight: ({ tintColor }) => <IconButton icon="add" size={24} color={tintColor} onPress={() => { }} />
-      }}>
+        headerRight: ({ tintColor }) => (
+          <IconButton icon="add" size={24} color={tintColor} onPress={() => {}} />
+        ),
+      }}
+    >
       <BottomTabs.Screen
         name="RecentExpenses"
         component={RecentExpenses}
         options={{
-          title: "RecentExpenses",
-          tabBarLabel: "Recent",
-          tabBarIcon: ({ color, size }) => (<Ionicons name="home" size={size} color={color} />)
-        }} />
+          title: 'RecentExpenses',
+          tabBarLabel: 'Recent',
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="home" size={size} color={color} />
+          ),
+        }}
+      />
       <BottomTabs.Screen name="AllExpenses" component={AllExpenses} />
     </BottomTabs.Navigator>
   );
@@ -38,13 +44,15 @@ export default function RootIndex() {
   return (
     <>
       <Stack.Navigator>
-        <Stack.Screen name="ExpensesOverview" component={ExpensesOverview} options={{ headerShown: false }} />
+        <Stack.Screen
+          name="ExpensesOverview"
+          component={ExpensesOverview}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen name="ManageExpense" component={ManageExpense} />
       </Stack.Navigator>
     </>
   );
 }
 
-const styles = StyleSheet.create({
-
-});
+const styles = StyleSheet.create({});

@@ -1,7 +1,5 @@
-import ExpensesOutput from "@/components/ExpensesOutput";
+import ExpensesOutput from '@/components/ExpensesOutput';
 
 export default function AllExpenses() {
-    return (
-        <ExpensesOutput expensesPeriod="Total" />
-    );
+  return <ExpensesOutput expensesPeriod="Total" />;
 }
