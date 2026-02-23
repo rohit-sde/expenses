@@ -22,7 +22,9 @@ export default function ManageExpense({
 
   function deleteExpenseHandler() {}
 
-  function cancelHandler() {}
+  function cancelHandler() {
+    navigation.goBack();
+  }
 
   function confirmHandler() {}
 
