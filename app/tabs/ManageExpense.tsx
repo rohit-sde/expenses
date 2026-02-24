@@ -4,6 +4,7 @@ import { useContext, useLayoutEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import IconButton from '../UI/IconButton';
 import { ExpensesContext } from '../store/expenses-context';
+import storeExpense from '../utils/http';
 
 export default function ManageExpense({
   route,
@@ -44,6 +45,7 @@ export default function ManageExpense({
     if (isEditing) {
       expensesCtx.updateExpense(expenseId, expenseData);
     } else {
+      storeExpense(expenseData);
       expensesCtx.addExpense(expenseData);
     }
     navigation.goBack();
