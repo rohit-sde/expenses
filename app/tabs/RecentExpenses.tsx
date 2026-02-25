@@ -1,25 +1,36 @@
 import ExpensesOutput from '@/components/ExpenseOutput/ExpensesOutput';
 import { useContext, useEffect, useState } from 'react';
 import { ExpensesContext } from '../store/expenses-context';
+import ErrorOverlay from '../UI/ErrorOverlay';
 import LoadingOverlay from '../UI/LoadingOverlay';
 import { getDateMinusDays } from '../utils/date';
 import { fetchExpenses } from '../utils/http';
 
 export default function RecentExpenses() {
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
   const expensesCtx = useContext(ExpensesContext);
   // const [expensesCtx, setExpensesCtx] = useState<any>([]);
 
   useEffect(() => {
     async function getExpenses() {
       setIsLoading(true);
-      const expenses = await fetchExpenses();
+      try {
+        const expenses = await fetchExpenses();
+        expensesCtx.setExpenses(expenses);
+      } catch (error) {
+        setError('Could not fetch expenses');
+      }
       setIsLoading(false);
-      expensesCtx.setExpenses(expenses);
       // setExpensesCtx(expenses);
     }
     getExpenses();
   }, []);
+
+  if (error && !isLoading) {
+    return <ErrorOverlay message={error} onCancel={() => setError(null)} />;
+  }
 
   if (isLoading) {
     return <LoadingOverlay />;

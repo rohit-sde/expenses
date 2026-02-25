@@ -2,6 +2,7 @@ import ExpenseForm from '@/components/ManageExpense/ExpenseForm';
 import { GlobalStyles } from '@/constants/styles';
 import { useContext, useLayoutEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
+import ErrorOverlay from '../UI/ErrorOverlay';
 import IconButton from '../UI/IconButton';
 import LoadingOverlay from '../UI/LoadingOverlay';
 import { ExpensesContext } from '../store/expenses-context';
@@ -15,6 +16,8 @@ export default function ManageExpense({
   navigation: any;
 }) {
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
   const expensesCtx = useContext(ExpensesContext);
 
   const expenseId = route.params?.expenseId;
@@ -32,10 +35,14 @@ export default function ManageExpense({
 
   async function deleteExpenseHandler() {
     setIsLoading(true);
-    await deleteExpense(expenseId);
-    expensesCtx.deleteExpense(expenseId);
-    setIsLoading(false);
-    navigation.goBack();
+    try {
+      await deleteExpense(expenseId);
+      expensesCtx.deleteExpense(expenseId);
+      navigation.goBack();
+    } catch (error) {
+      setError('Could not delete expense');
+      setIsLoading(false);
+    }
   }
 
   function cancelHandler() {
@@ -48,20 +55,27 @@ export default function ManageExpense({
     description: string;
   }) {
     setIsLoading(true);
-    if (isEditing) {
-      expensesCtx.updateExpense(expenseId, expenseData);
-      await updateExpense(expenseId, expenseData);
-    } else {
-      const id = await storeExpense(expenseData);
-      expensesCtx.addExpense({ ...expenseData, id: id });
+    try {
+      if (isEditing) {
+        expensesCtx.updateExpense(expenseId, expenseData);
+        await updateExpense(expenseId, expenseData);
+      } else {
+        const id = await storeExpense(expenseData);
+        expensesCtx.addExpense({ ...expenseData, id: id });
+      }
+      navigation.goBack();
+    } catch (error) {
+      setError('Could not save expense - Please try again later');
+      setIsLoading(false);
     }
-    setIsLoading(false);
-    navigation.goBack();
   }
 
   return (
     <View style={styles.container}>
       {isLoading && <LoadingOverlay />}
+      {error && !isLoading && (
+        <ErrorOverlay message={error} onCancel={() => setError(null)} />
+      )}
       <ExpenseForm
         submitButtonLabel={isEditing ? 'Update' : 'Add'}
         onCancel={cancelHandler}
