@@ -37,7 +37,7 @@ export default function ManageExpense({
     navigation.goBack();
   }
 
-  function confirmHandler(expenseData: {
+  async function confirmHandler(expenseData: {
     amount: number;
     date: Date;
     description: string;
@@ -45,8 +45,8 @@ export default function ManageExpense({
     if (isEditing) {
       expensesCtx.updateExpense(expenseId, expenseData);
     } else {
-      storeExpense(expenseData);
-      expensesCtx.addExpense(expenseData);
+      const id = await storeExpense(expenseData);
+      expensesCtx.addExpense({ ...expenseData, id: id });
     }
     navigation.goBack();
   }
