@@ -4,7 +4,7 @@ import { useContext, useLayoutEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import IconButton from '../UI/IconButton';
 import { ExpensesContext } from '../store/expenses-context';
-import storeExpense from '../utils/http';
+import storeExpense, { deleteExpense, updateExpense } from '../utils/http';
 
 export default function ManageExpense({
   route,
@@ -28,7 +28,8 @@ export default function ManageExpense({
     });
   }, [navigation, isEditing]);
 
-  function deleteExpenseHandler() {
+  async function deleteExpenseHandler() {
+    await deleteExpense(expenseId);
     expensesCtx.deleteExpense(expenseId);
     navigation.goBack();
   }
@@ -44,6 +45,7 @@ export default function ManageExpense({
   }) {
     if (isEditing) {
       expensesCtx.updateExpense(expenseId, expenseData);
+      await updateExpense(expenseId, expenseData);
     } else {
       const id = await storeExpense(expenseData);
       expensesCtx.addExpense({ ...expenseData, id: id });
